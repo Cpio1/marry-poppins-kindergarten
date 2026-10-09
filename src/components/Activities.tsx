@@ -1,6 +1,6 @@
 import { Gem, Globe, MessagesSquare, Puzzle } from "lucide-react";
-import { Container, SectionHeading } from "./ui/Basics";
-import { Cloud, Rainbow, Star } from "./ui/Decor";
+import { Container, SectionHeading, SOFT_SHAPES } from "./ui/Basics";
+import { Balloon, Blob, Cloud, Rainbow, Star } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
 const ACTIVITIES = [
@@ -39,6 +39,8 @@ export function Activities() {
     <section id="activities" className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff,#fffbeb_50%,#ffffff)] py-16 sm:py-20">
       <Rainbow className="-right-6 top-10 hidden h-20 w-36 opacity-60 md:block" />
       <Cloud className="left-[2%] top-28 h-9 w-18 animate-float-slow" color="#e3f6fd" />
+      <Blob className="-left-14 bottom-10 h-40 w-40 opacity-[0.1]" color="#08AEEA" />
+      <Balloon className="bottom-24 right-[3%] hidden h-14 w-6 animate-float [animation-delay:.8s] lg:block" color="#FF9238" />
       <Star className="bottom-16 left-[10%] h-4 w-4 animate-twinkle" color="#18B52B" />
 
       <Container>
@@ -53,9 +55,8 @@ export function Activities() {
           {ACTIVITIES.map(({ title, text, icon: Icon, color, soft }, i) => (
             <Reveal as="li" key={title} delay={i * 80}>
               <article
-                className={`group relative flex h-full items-start gap-4 overflow-hidden border-2 border-transparent bg-white p-5 shadow-[0_12px_30px_-22px_rgba(31,42,68,0.45)] transition-all duration-300 hover:-translate-y-1 sm:p-6 ${
-                  i % 2 ? "rounded-[14px_44px_14px_44px]" : "rounded-[44px_14px_44px_14px]"
-                }`}
+                className="group relative flex h-full items-start gap-4 overflow-hidden bg-white px-6 py-6 shadow-[0_12px_30px_-22px_rgba(31,42,68,0.45)] transition-all duration-300 hover:-translate-y-1 sm:px-7"
+                style={{ borderRadius: SOFT_SHAPES[(i * 2 + 1) % SOFT_SHAPES.length] }}
               >
                 <span
                   aria-hidden

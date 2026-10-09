@@ -10,14 +10,14 @@ export function Documents() {
   return (
     <section id="documents" className="relative py-10 sm:py-14">
       <Container>
-        <Reveal className="relative mx-auto max-w-3xl overflow-hidden rounded-[20px_56px_20px_56px] bg-sun-soft px-6 py-10 text-center sm:px-12">
+        <Reveal className="relative mx-auto max-w-3xl overflow-hidden bg-sun-soft px-8 py-12 text-center [border-radius:90px_60px_110px_70px/70px_90px_60px_100px] sm:px-14">
           <Cloud className="-right-4 -top-2 h-14 w-28 opacity-90" />
           <Cloud className="-bottom-4 -left-6 h-12 w-24 opacity-90" />
           <Star className="left-[10%] top-8 h-4 w-4 animate-twinkle" color="#FF9238" />
           <Sparkle className="bottom-8 right-[12%] h-4 w-4 animate-twinkle [animation-delay:.6s]" color="#EA3B94" />
 
           <div className="relative">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-[22px_10px_22px_10px] bg-white text-peach shadow-[0_10px_20px_-12px_rgba(255,146,56,0.8)]">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center bg-white text-peach [border-radius:58%_42%_52%_48%/46%_56%_44%_54%] shadow-[0_10px_20px_-12px_rgba(255,146,56,0.8)]">
               <FileText className="h-7 w-7" aria-hidden />
             </span>
             <h2 className="mt-4 text-2xl font-black text-ink sm:text-3xl">Документы</h2>
@@ -30,7 +30,7 @@ export function Documents() {
                 href={DOCUMENTS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group mt-6 inline-flex items-center gap-2 rounded-[22px_8px_22px_8px] bg-peach px-6 py-3 font-bold text-white shadow-[0_12px_24px_-12px_rgba(255,146,56,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:rounded-[8px_22px_8px_22px] hover:bg-[#f27d1d]"
+                className="group mt-6 inline-flex items-center gap-2 rounded-full bg-peach px-7 py-3 font-bold text-white shadow-[0_12px_24px_-12px_rgba(255,146,56,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f27d1d]"
               >
                 Посмотреть документы
                 <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
@@ -41,7 +41,7 @@ export function Documents() {
                   type="button"
                   disabled
                   aria-describedby="documents-soon"
-                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-[22px_8px_22px_8px] bg-peach/60 px-6 py-3 font-bold text-white"
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-peach/60 px-7 py-3 font-bold text-white"
                 >
                   Посмотреть документы
                   <ExternalLink className="h-4 w-4" aria-hidden />

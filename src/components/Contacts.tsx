@@ -27,13 +27,13 @@ export function Contacts() {
         <SectionHeading tone="berry" eyebrow="Контакты" title="Приходите в гости!" text="Будем рады ответить на ваши вопросы и познакомиться." />
 
         <div className="mt-10 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <Reveal className="rounded-[40px_14px_40px_14px] bg-white p-5 shadow-[0_16px_36px_-24px_rgba(8,120,170,0.6)] sm:p-7">
+          <Reveal className="bg-white px-6 py-7 shadow-[0_16px_36px_-24px_rgba(8,120,170,0.6)] [border-radius:56px_80px_60px_90px/60px_70px_80px_64px] sm:px-9 sm:py-9">
             <address className="not-italic">
               <ul className="space-y-4">
                 {DETAILS.map(({ icon: Icon, label, value, href, color }) => (
                   <li key={label} className="flex gap-3">
                     <span
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px_6px_14px_6px]"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center [border-radius:58%_42%_52%_48%/46%_56%_44%_54%]"
                       style={{ backgroundColor: `${color}1a`, color }}
                     >
                       <Icon className="h-5 w-5" aria-hidden />
@@ -54,7 +54,7 @@ export function Contacts() {
             </address>
 
             <div className="mt-6 grid gap-2.5 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-              <a href={SITE.phoneHref} className={`${BTN} rounded-[18px_6px_18px_6px] bg-sky hover:bg-sky-deep`}>
+              <a href={SITE.phoneHref} className={`${BTN} rounded-full bg-sky hover:bg-sky-deep`}>
                 <Phone className="h-4 w-4" aria-hidden />
                 Позвонить
               </a>
@@ -62,7 +62,7 @@ export function Contacts() {
                 href={SITE.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${BTN} rounded-[6px_18px_6px_18px] bg-[#25D366] hover:bg-[#1ebe5b]`}
+                className={`${BTN} rounded-full bg-[#25D366] hover:bg-[#1ebe5b]`}
               >
                 <WhatsAppIcon className="h-4.5 w-4.5" />
                 WhatsApp
@@ -71,7 +71,7 @@ export function Contacts() {
                 href={SITE.instagramHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${BTN} rounded-[18px_6px_18px_6px] bg-[linear-gradient(45deg,#FF9238,#F33442,#EA3B94)] hover:brightness-110`}
+                className={`${BTN} rounded-full bg-[linear-gradient(45deg,#FF9238,#F33442,#EA3B94)] hover:brightness-110`}
               >
                 <InstagramIcon className="h-4.5 w-4.5" />
                 Instagram
@@ -80,7 +80,7 @@ export function Contacts() {
           </Reveal>
 
           <Reveal delay={120} className="flex flex-col">
-            <div className="relative min-h-[320px] flex-1 overflow-hidden rounded-[14px_40px_14px_40px] border-4 border-white bg-white shadow-[0_16px_36px_-24px_rgba(8,120,170,0.6)] sm:min-h-[380px]">
+            <div className="relative min-h-[320px] flex-1 overflow-hidden border-[5px] border-white [border-radius:30px_90px_36px_80px/30px_70px_36px_60px] bg-white shadow-[0_16px_36px_-24px_rgba(8,120,170,0.6)] sm:min-h-[380px]">
               <iframe
                 src={MAP.embedUrl}
                 title={`Карта: ${SITE.name}, ${SITE.addressShort}`}

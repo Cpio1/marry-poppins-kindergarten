@@ -14,6 +14,23 @@ const EYEBROW_COLORS = {
   rose: "bg-rose-soft text-rose",
 } as const;
 
+/**
+ * Органические формы (border-radius в формате «горизонтальные / вертикальные» радиусы).
+ * Мягкие, но не слишком сильные — чтобы не срезать текст и изображения.
+ */
+export const SOFT_SHAPES = [
+  "42px 64px 38px 70px / 46px 40px 58px 50px",
+  "70px 40px 64px 42px / 52px 58px 40px 46px",
+  "56px 56px 36px 72px / 44px 60px 44px 56px",
+  "38px 72px 56px 56px / 58px 44px 56px 40px",
+  "64px 42px 70px 40px / 40px 54px 46px 58px",
+  "48px 68px 44px 60px / 60px 42px 54px 44px",
+  "72px 48px 40px 62px / 50px 46px 60px 42px",
+];
+
+/** Форма маленьких «камешков» для иконок */
+export const PEBBLE = "58% 42% 52% 48% / 46% 56% 44% 54%";
+
 export type Tone = keyof typeof EYEBROW_COLORS;
 
 export function SectionHeading({
@@ -33,7 +50,7 @@ export function SectionHeading({
   return (
     <Reveal className={center ? "mx-auto max-w-2xl text-center" : "max-w-xl"}>
       <span
-        className={`inline-block rounded-[14px_6px_14px_6px] px-3 py-1 text-xs font-extrabold uppercase tracking-wider ${EYEBROW_COLORS[tone]}`}
+        className={`inline-block rounded-full px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider ${EYEBROW_COLORS[tone]}`}
       >
         {eyebrow}
       </span>

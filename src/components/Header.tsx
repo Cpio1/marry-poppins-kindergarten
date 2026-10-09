@@ -80,7 +80,7 @@ export function Header({ logo }: { logo: SiteImage | null }) {
         <div className="flex items-center gap-2">
           <a
             href={SITE.phoneHref}
-            className="hidden items-center gap-1.5 rounded-[18px_8px_18px_8px] bg-sky px-3.5 py-2 text-sm font-bold text-white shadow-[0_6px_16px_-6px_rgba(8,174,234,0.7)] transition-all hover:-translate-y-0.5 hover:bg-sky-deep sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-full bg-sky px-4 py-2 text-sm font-bold text-white shadow-[0_6px_16px_-6px_rgba(8,174,234,0.7)] transition-all hover:-translate-y-0.5 hover:bg-sky-deep sm:inline-flex"
           >
             <Phone className="h-4 w-4" aria-hidden />
             {SITE.phone}
@@ -91,7 +91,7 @@ export function Header({ logo }: { logo: SiteImage | null }) {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Закрыть меню" : "Открыть меню"}
-            className="flex h-10 w-10 items-center justify-center rounded-[14px_6px_14px_6px] bg-sky-soft text-sky-deep transition-colors hover:bg-sky hover:text-white xl:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-soft text-sky-deep transition-colors hover:bg-sky hover:text-white xl:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -112,7 +112,7 @@ export function Header({ logo }: { logo: SiteImage | null }) {
                 <a
                   href={`#${item.id}`}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2 rounded-[18px_8px_18px_8px] px-3.5 py-2.5 text-[15px] font-bold transition-colors ${
+                  className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-[15px] font-bold transition-colors ${
                     active === item.id ? "bg-sky-soft text-sky-deep" : "bg-cream text-ink hover:bg-sky-soft"
                   }`}
                 >
@@ -125,7 +125,7 @@ export function Header({ logo }: { logo: SiteImage | null }) {
           <a
             href={SITE.phoneHref}
             onClick={() => setOpen(false)}
-            className="mt-3 flex items-center justify-center gap-2 rounded-[20px_8px_20px_8px] bg-sky px-4 py-3 font-bold text-white sm:hidden"
+            className="mt-3 flex items-center justify-center gap-2 rounded-full bg-sky px-4 py-3 font-bold text-white sm:hidden"
           >
             <Phone className="h-4 w-4" aria-hidden />
             Позвонить: {SITE.phone}

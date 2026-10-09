@@ -78,19 +78,39 @@ export function UmbrellaDecor({ className = "", color = "#EA3B94" }: DecorProps)
   );
 }
 
-/** Волна-разделитель между секциями */
+/** Двухслойная волна-разделитель между секциями */
 export function Wave({ className = "", color = "#ffffff", flip = false }: DecorProps & { flip?: boolean }) {
   return (
     <svg
-      viewBox="0 0 1440 60"
+      viewBox="0 0 1440 70"
       preserveAspectRatio="none"
       aria-hidden
-      className={`pointer-events-none block h-8 w-full sm:h-12 ${flip ? "rotate-180" : ""} ${className}`}
+      className={`pointer-events-none block h-10 w-full sm:h-14 ${flip ? "rotate-180" : ""} ${className}`}
     >
       <path
-        d="M0 32c120-22 240-30 360-18s240 38 360 34 240-34 360-38 240 14 360 22v28H0Z"
+        d="M0 30c140-26 260-30 400-10s260 40 420 26 280-40 420-36 160 18 200 24v36H0Z"
+        fill={color}
+        opacity=".45"
+      />
+      <path
+        d="M0 42c120-22 240-30 360-18s240 38 360 34 240-34 360-38 240 14 360 22v28H0Z"
         fill={color}
       />
+    </svg>
+  );
+}
+
+/** Мягкая органическая фигура для фона */
+const BLOB_PATHS = [
+  "M44 -58c15 10 26 28 29 46 3 19-3 38-15 52-12 15-30 25-49 25s-38-9-50-24-17-35-12-53 19-33 36-44 46-12 61-2Z",
+  "M51 -41c13 15 18 37 11 55S35 47 14 54s-45 4-60-10-21-38-14-58 26-34 47-38 51 6 64 11Z",
+  "M38 -52c16 9 30 24 32 42 3 18-7 38-21 51s-34 20-53 16-36-18-44-36-7-40 5-55 33-26 51-26 14-1 30 8Z",
+];
+
+export function Blob({ className = "", color = "#08AEEA", variant = 0 }: DecorProps & { variant?: number }) {
+  return (
+    <svg viewBox="-80 -80 160 160" aria-hidden className={`${base} ${className}`}>
+      <path d={BLOB_PATHS[variant % BLOB_PATHS.length]} fill={color} />
     </svg>
   );
 }

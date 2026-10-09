@@ -27,7 +27,7 @@ export function Hero({ logo, hero }: { logo: SiteImage | null; hero: SiteImage |
       <Container className="relative grid items-center gap-10 pb-16 sm:pb-20 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
         <div className="text-center lg:text-left">
           <div className="rise">
-            <span className="inline-flex items-center gap-1.5 rounded-[16px_6px_16px_6px] bg-white/80 px-3 py-1 text-xs font-extrabold text-sky-deep shadow-sm">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-xs font-extrabold text-sky-deep shadow-sm">
               <Heart className="h-3.5 w-3.5 fill-berry text-berry" aria-hidden />
               Детский сад в Алматы
             </span>
@@ -55,14 +55,14 @@ export function Hero({ logo, hero }: { logo: SiteImage | null; hero: SiteImage |
           <div className="rise mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start" style={{ "--d": "320ms" } as React.CSSProperties}>
             <a
               href="#contacts"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-[22px_8px_22px_8px] bg-sky px-6 py-3 font-bold text-white shadow-[0_10px_24px_-10px_rgba(8,174,234,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:rounded-[8px_22px_8px_22px] hover:bg-sky-deep sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky px-6 py-3 font-bold text-white shadow-[0_10px_24px_-10px_rgba(8,174,234,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-deep sm:w-auto"
             >
               <MessageCircle className="h-4.5 w-4.5" aria-hidden />
               Связаться с нами
             </a>
             <a
               href="#about"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-[8px_22px_8px_22px] border-2 border-sun bg-white px-6 py-2.5 font-bold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:rounded-[22px_8px_22px_8px] hover:bg-sun-soft sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-sun bg-white px-6 py-2.5 font-bold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-sun-soft sm:w-auto"
             >
               Узнать больше
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
@@ -78,11 +78,11 @@ export function Hero({ logo, hero }: { logo: SiteImage | null; hero: SiteImage |
           {/* Цветной «ореол» вокруг фото */}
           <div
             aria-hidden
-            className="absolute -inset-3 rotate-6 bg-[conic-gradient(from_200deg,#08AEEA,#18B52B,#FFD52A,#FF9238,#F33442,#EA3B94,#08AEEA)] opacity-25 blur-[2px]"
+            className="absolute -inset-3 rotate-6 animate-morph bg-[conic-gradient(from_200deg,#08AEEA,#18B52B,#FFD52A,#FF9238,#F33442,#EA3B94,#08AEEA)] opacity-25 blur-[2px]"
             style={{ borderRadius: PHOTO_SHAPE }}
           />
           <div
-            className="relative aspect-square overflow-hidden border-[6px] border-white bg-sky-soft shadow-[0_24px_50px_-24px_rgba(8,120,170,0.55)]"
+            className="relative aspect-square animate-morph overflow-hidden border-[6px] border-white bg-sky-soft shadow-[0_24px_50px_-24px_rgba(8,120,170,0.55)]"
             style={{ borderRadius: PHOTO_SHAPE }}
           >
             {hero ? (

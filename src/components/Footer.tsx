@@ -15,7 +15,7 @@ export function Footer() {
 
       <Container className="grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1.3fr]">
         <div>
-          <a href="#home" className="inline-block rounded-[18px_8px_18px_8px] bg-white px-3 py-1.5">
+          <a href="#home" className="inline-block rounded-full bg-white px-4 py-1.5">
             <ColorfulName className="text-xl" />
           </a>
           <p className="mt-3 max-w-xs text-sm leading-relaxed">{SITE.slogan}</p>
