@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sky: #08aeea;
+  --color-sky-soft: #e3f6fd;
+  --color-sky-deep: #0789bb;
+  --color-leaf: #18b52b;
+  --color-leaf-soft: #e5f7e7;
+  --color-sun: #ffd52a;
+  --color-sun-soft: #fff7d6;
+  --color-berry: #f33442;
+  --color-berry-soft: #fee8ea;
+  --color-peach: #ff9238;
+  --color-peach-soft: #fff0e3;
+  --color-rose: #ea3b94;
+  --color-rose-soft: #fde8f3;
+  --color-ink: #1f2a44;
+  --color-ink-soft: #5b6680;
+  --color-cream: #f7fbfe;
+
+  --font-sans: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-drift: drift 40s linear infinite;
+  --animate-sway: sway 5s ease-in-out infinite;
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.25s ease-out;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes drift {
+    from {
+      transform: translateX(-12vw);
+    }
+    to {
+      transform: translateX(112vw);
+    }
+  }
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(-4deg);
+    }
+    50% {
+      transform: rotate(4deg);
+    }
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.85);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+  ::selection {
+    @apply bg-sky/20;
+  }
+}
+
+/* Появление первого экрана — на чистом CSS, не ждёт загрузки JS */
+.rise {
+  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* Появление при прокрутке */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal,
+  .rise {
+    opacity: 1;
+    transform: none;
+  }
+}
