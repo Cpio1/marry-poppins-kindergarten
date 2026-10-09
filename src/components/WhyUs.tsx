@@ -25,7 +25,7 @@ export function WhyUs() {
           <div className="relative">
             <Reveal className="text-center">
               <h2 id="why-title" className="text-2xl font-black sm:text-3xl">
-                Почему выбирают Mary Poppins?
+                Почему выбирают MARY POPPINS?
               </h2>
             </Reveal>
 

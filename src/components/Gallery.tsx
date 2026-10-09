@@ -19,7 +19,7 @@ const SHAPES = [
   "72px 52px 80px 48px / 60px 70px 50px 64px",
 ];
 
-const altFor = (i: number) => `Фото из жизни детского сада Mary Poppins — ${i + 1}`;
+const altFor = (i: number) => `Фото из жизни детского сада MARY POPPINS — ${i + 1}`;
 
 export function Gallery({ images }: { images: SiteImage[] }) {
   const [expanded, setExpanded] = useState(false);

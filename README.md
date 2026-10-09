@@ -1,4 +1,4 @@
-# Mary Poppins — лендинг детского сада
+# MARY POPPINS — лендинг детского сада
 
 Next.js 15 · TypeScript · Tailwind CSS 4 · Lucide React
 

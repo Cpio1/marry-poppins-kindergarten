@@ -4,7 +4,7 @@ import type { SiteImage } from "@/lib/images";
 const LETTER_COLORS = ["#08AEEA", "#18B52B", "#FF9238", "#F33442", "#EA3B94", "#FFD52A"];
 
 /** Разноцветное название в стиле логотипа (используется, если в public/images нет logo.*). */
-export function ColorfulName({ text = "Mary Poppins", className = "" }: { text?: string; className?: string }) {
+export function ColorfulName({ text = "MARY POPPINS", className = "" }: { text?: string; className?: string }) {
   let n = 0;
   return (
     <span className={`font-black tracking-tight ${className}`} aria-label={text}>
@@ -34,7 +34,7 @@ export function Logo({ logo, size = "sm" }: { logo: SiteImage | null; size?: "sm
     return (
       <Image
         src={logo.src}
-        alt="Логотип детского сада Mary Poppins"
+        alt="Логотип детского сада MARY POPPINS"
         width={width}
         height={height}
         priority={size === "sm"}

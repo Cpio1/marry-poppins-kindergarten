@@ -88,7 +88,7 @@ export function Hero({ logo, hero }: { logo: SiteImage | null; hero: SiteImage |
             {hero ? (
               <Image
                 src={hero.src}
-                alt="Детский сад Mary Poppins в Алматы"
+                alt="Детский сад MARY POPPINS в Алматы"
                 fill
                 priority
                 sizes="(min-width: 1024px) 460px, 90vw"

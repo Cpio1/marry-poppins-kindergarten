@@ -47,7 +47,7 @@ export function Header({ logo }: { logo: SiteImage | null }) {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <a href="#home" aria-label="Mary Poppins — на главную" className="shrink-0 transition-transform hover:scale-[1.03]" onClick={() => setOpen(false)}>
+        <a href="#home" aria-label="MARY POPPINS — на главную" className="shrink-0 transition-transform hover:scale-[1.03]" onClick={() => setOpen(false)}>
           <Logo logo={logo} />
         </a>
 

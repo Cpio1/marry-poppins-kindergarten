@@ -26,7 +26,7 @@ export function About({ photo }: { photo: SiteImage | null }) {
             {photo ? (
               <Image
                 src={photo.src}
-                alt="Дети в детском саду Mary Poppins"
+                alt="Дети в детском саду MARY POPPINS"
                 fill
                 sizes="(min-width: 1024px) 448px, 90vw"
                 className="object-cover transition-transform duration-700 hover:scale-105"
@@ -55,7 +55,7 @@ export function About({ photo }: { photo: SiteImage | null }) {
           />
           <Reveal delay={100}>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Mary Poppins — детский сад в Алматы, где каждый день наполнен интересными открытиями, развивающими
+              MARY POPPINS — детский сад в Алматы, где каждый день наполнен интересными открытиями, развивающими
               занятиями и радостными моментами.
             </p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">

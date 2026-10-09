@@ -11,9 +11,9 @@ const nunito = Nunito({
   display: "swap",
 });
 
-const TITLE = "Mary Poppins — детский сад в Алматы | Карагайлы, Наурызбайский район";
+const TITLE = "MARY POPPINS — детский сад в Алматы | Карагайлы, Наурызбайский район";
 const DESCRIPTION =
-  "Детский сад Mary Poppins в Алматы (мкр Карагайлы, ул. Кали Надырова, 98/1). 4 группы для детей 2–5 лет, казахский и английский языки, Монтессори, соляная комната, 5-разовое питание. Пн–Пт 08:00–18:00.";
+  "Детский сад MARY POPPINS в Алматы (мкр Карагайлы, ул. Кали Надырова, 98/1). 4 группы для детей 2–5 лет, казахский и английский языки, Монтессори, соляная комната, 5-разовое питание. Пн–Пт 08:00–18:00.";
 
 export function generateMetadata(): Metadata {
   const { hero, logo } = getSiteImages();
@@ -25,7 +25,7 @@ export function generateMetadata(): Metadata {
     description: DESCRIPTION,
     keywords: [
       "детский сад Алматы",
-      "Mary Poppins",
+      "MARY POPPINS",
       "Мэри Поппинс детский сад",
       "частный детский сад Алматы",
       "детский сад Карагайлы",
@@ -41,7 +41,7 @@ export function generateMetadata(): Metadata {
       title: TITLE,
       description: DESCRIPTION,
       ...(ogImage && {
-        images: [{ url: ogImage.src, width: ogImage.width, height: ogImage.height, alt: "Детский сад Mary Poppins" }],
+        images: [{ url: ogImage.src, width: ogImage.width, height: ogImage.height, alt: "Детский сад MARY POPPINS" }],
       }),
     },
     twitter: {
