@@ -14,7 +14,14 @@ const FACTS = [
 
 const d = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
+/** Мягкая асимметричная форма для высоких изображений: скругляет только углы, не задевая содержимое */
+const TALL_SHAPE = "34% 50% 30% 26% / 9% 10% 8% 7%";
+
 export function Hero({ hero }: { hero: SiteImage | null }) {
+  // Высокое изображение (например, вертикальная афиша) показываем целиком, в его собственных пропорциях
+  const ratio = hero ? hero.width / hero.height : 0.8;
+  const tall = ratio < 0.7;
+
   return (
     <section id="home" className="relative overflow-hidden pb-16 pt-28 sm:pb-24 sm:pt-32 lg:pb-28 lg:pt-40">
       {/* Мягкий фон: одна крупная форма, уходящая за край */}
@@ -77,7 +84,10 @@ export function Hero({ hero }: { hero: SiteImage | null }) {
         </div>
 
         {/* Композиция с фото */}
-        <div className="relative mx-auto w-full max-w-[400px] sm:max-w-[480px] lg:max-w-[540px]">
+        <div
+          className="relative mx-auto w-full max-w-[400px] [--hero-h:600px] sm:max-w-[480px] lg:max-w-[540px] lg:[--hero-h:720px]"
+          style={tall ? { width: `min(100%, calc(var(--hero-h) * ${ratio.toFixed(4)}))` } : undefined}
+        >
           <Shape
             variant="pebble"
             className="absolute -bottom-6 -left-8 h-40 w-40 animate-drift-slow text-yellow sm:-left-14 sm:h-52 sm:w-52"
@@ -86,14 +96,17 @@ export function Hero({ hero }: { hero: SiteImage | null }) {
           <Shape variant="leaf" className="rise-photo absolute -right-4 top-6 h-24 w-24 text-pink sm:-right-8 sm:h-32 sm:w-32" style={d(400)} />
 
           <div className="rise-photo parallax relative [filter:drop-shadow(0_30px_40px_rgb(39_91_120/0.18))]" style={d(150)}>
-            <div className="relative aspect-[4/5] w-full [clip-path:url(#mp-organic)]">
+            <div
+              className={`relative w-full overflow-hidden ${tall ? "" : "aspect-[4/5] [clip-path:url(#mp-organic)]"}`}
+              style={tall && hero ? { aspectRatio: `${hero.width} / ${hero.height}`, borderRadius: TALL_SHAPE } : undefined}
+            >
               {hero ? (
                 <Image
                   src={hero.src}
                   alt="Детский сад MARY POPPINS в Алматы"
                   fill
                   priority
-                  sizes="(min-width: 1024px) 540px, (min-width: 640px) 480px, 90vw"
+                  sizes={tall ? "(min-width: 1024px) 345px, 290px" : "(min-width: 1024px) 540px, (min-width: 640px) 480px, 90vw"}
                   className="object-cover"
                 />
               ) : (
@@ -104,34 +117,40 @@ export function Hero({ hero }: { hero: SiteImage | null }) {
 
           {/* Тонкие линейные акценты */}
           {hero && (
-          <UmbrellaLine
-            now
-            fill="var(--color-coral)"
-            className="absolute -left-3 -top-8 h-24 w-20 rotate-[-16deg] text-deep sm:-left-10 sm:-top-10 sm:h-32 sm:w-28"
-          />
+            <UmbrellaLine
+              now
+              fill="var(--color-coral)"
+              className="absolute -left-3 -top-8 h-24 w-20 rotate-[-16deg] text-deep sm:-left-10 sm:-top-10 sm:h-32 sm:w-28"
+            />
           )}
-          <WindLine now className="absolute -left-10 bottom-[18%] w-[70%] text-deep/70 sm:-left-20" style={d(900)} />
+          <WindLine
+            now
+            className={`absolute w-[70%] text-deep/70 ${tall ? "-bottom-12 -left-16 sm:-left-28" : "-left-10 bottom-[18%] sm:-left-20"}`}
+            style={d(900)}
+          />
           <Spark className="absolute right-[8%] top-[-4%] h-5 w-5 animate-drift text-coral-ink/70" />
           <Spark className="absolute -right-2 bottom-[30%] h-3 w-3 text-deep/40" />
 
-          {/* Плашка с особенностями */}
-          <div
-            className="rise absolute -bottom-6 right-0 flex max-w-[15.5rem] items-center gap-3 rounded-[var(--radius-soft)] border border-white/70 bg-white/85 p-3 pr-4 shadow-[var(--shadow-lift)] backdrop-blur-md sm:-bottom-4 sm:-right-4"
-            style={d(700)}
-          >
-            <span className="flex -space-x-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green text-green-ink ring-2 ring-white">
-                <Languages className="h-4 w-4" aria-hidden />
+          {/* Плашка с особенностями (не перекрывает высокое изображение-афишу) */}
+          {!tall && (
+            <div
+              className="rise absolute -bottom-6 right-0 flex max-w-[15.5rem] items-center gap-3 rounded-[var(--radius-soft)] border border-white/70 bg-white/85 p-3 pr-4 shadow-[var(--shadow-lift)] backdrop-blur-md sm:-bottom-4 sm:-right-4"
+              style={d(700)}
+            >
+              <span className="flex -space-x-2">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green text-green-ink ring-2 ring-white">
+                  <Languages className="h-4 w-4" aria-hidden />
+                </span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow text-yellow-ink ring-2 ring-white">
+                  <Puzzle className="h-4 w-4" aria-hidden />
+                </span>
               </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow text-yellow-ink ring-2 ring-white">
-                <Puzzle className="h-4 w-4" aria-hidden />
+              <span className="text-[13px] leading-snug text-ink-soft">
+                <span className="block font-semibold text-ink">Казахский и английский</span>
+                Монтессори-занятия
               </span>
-            </span>
-            <span className="text-[13px] leading-snug text-ink-soft">
-              <span className="block font-semibold text-ink">Казахский и английский</span>
-              Монтессори-занятия
-            </span>
-          </div>
+            </div>
+          )}
         </div>
       </Container>
     </section>

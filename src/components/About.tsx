@@ -3,7 +3,7 @@ import Image from "next/image";
 import { SITE } from "@/data/site";
 import type { SiteImage } from "@/lib/images";
 import { Container, SectionHeading } from "./ui/Basics";
-import { BrandMark, Scene, Shape, Spark, WindLine } from "./ui/Decor";
+import { BrandMark, Breeze, Scallop, Scene, Shape, Spark, WindLine } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
 const VALUES = [
@@ -37,7 +37,11 @@ export function About({ photo }: { photo: SiteImage | null }) {
         <div className="relative mx-auto w-full max-w-[420px] lg:mx-0">
           <Shape variant="leaf" className="absolute -bottom-8 -right-10 h-48 w-48 text-green sm:h-60 sm:w-60" />
           <Reveal variant="mask" className="relative">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-arch)] bg-cream-deep">
+            <div
+              className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-arch)] bg-cream-deep"
+              // Вертикальное фото — в его собственных пропорциях, чтобы не обрезать детей
+              style={photo && photo.height > photo.width ? { aspectRatio: `${photo.width} / ${photo.height}` } : undefined}
+            >
               {photo ? (
                 <Image
                   src={photo.src}
@@ -53,6 +57,12 @@ export function About({ photo }: { photo: SiteImage | null }) {
           </Reveal>
           <Stamp className="absolute -left-4 bottom-10 h-28 w-28 sm:-left-12 sm:h-32 sm:w-32" />
           <Spark className="absolute -top-3 right-6 h-5 w-5 text-coral-ink/60" />
+          <Reveal variant="fade" delay={300} className="absolute -right-6 top-[18%] sm:-right-14">
+            <Breeze className="w-20 text-deep/50 sm:w-24" />
+          </Reveal>
+          <Reveal variant="fade" delay={400} className="absolute -bottom-7 left-[38%]">
+            <Scallop count={5} className="h-3 w-24 text-coral" />
+          </Reveal>
         </div>
 
         {/* Текст */}

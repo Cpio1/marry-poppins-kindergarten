@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const IMAGES_DIR = path.join(process.cwd(), "public", "images");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+const IMAGES_DIR = path.join(PUBLIC_DIR, "images");
 const IMAGE_EXT = /\.(jpe?g|png|webp|gif|avif|svg)$/i;
 
 const LOGO_NAMES = ["logo"];
 const HERO_NAMES = ["main-page", "main", "hero"];
-const ABOUT_NAMES = ["about"];
+const ABOUT_NAMES = ["main-page2", "about"];
 
 export type SiteImage = { src: string; width: number; height: number };
 
@@ -49,18 +50,19 @@ function readSize(buf: Buffer, file: string): { width: number; height: number } 
   return null;
 }
 
-function loadImages(): SiteImage[] {
+/** Все изображения из папки (urlPrefix — путь к папке на сайте). */
+function loadImages(dir: string, urlPrefix: string): SiteImage[] {
   let files: string[];
   try {
-    files = fs.readdirSync(IMAGES_DIR).filter((f) => IMAGE_EXT.test(f));
+    files = fs.readdirSync(dir).filter((f) => IMAGE_EXT.test(f));
   } catch {
     return [];
   }
   return files
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
     .flatMap((file) => {
-      const size = readSize(fs.readFileSync(path.join(IMAGES_DIR, file)), file);
-      return size ? [{ src: `/images/${encodeURIComponent(file)}`, ...size }] : [];
+      const size = readSize(fs.readFileSync(path.join(dir, file)), file);
+      return size ? [{ src: `${urlPrefix}/${encodeURIComponent(file)}`, ...size }] : [];
     });
 }
 
@@ -71,17 +73,19 @@ const findByName = (all: SiteImage[], names: string[]) =>
   names.map((n) => all.find((img) => baseName(img) === n)).find(Boolean) ?? null;
 
 /**
- * Изображения из public/images:
- *  - logo.*                     — логотип
- *  - main-page.* / main.* / hero.* — главное фото
- *  - about.*                    — фото для раздела «О садике» (необязательно)
- *  - остальные                  — галерея (по имени файла)
+ * Изображения из public/images (именованные файлы ищутся также прямо в public/):
+ *  - logo.*                          — логотип
+ *  - main-page.* / main.* / hero.*   — главное фото
+ *  - main-page2.* / about.*          — фото для раздела «О садике» (необязательно)
+ *  - остальные из public/images      — галерея (по имени файла)
  */
 export function getSiteImages() {
-  const all = loadImages();
-  const logo = findByName(all, LOGO_NAMES);
-  const hero = findByName(all, HERO_NAMES);
-  const aboutOwn = findByName(all, ABOUT_NAMES);
+  const all = loadImages(IMAGES_DIR, "/images");
+  // Сначала public/images, затем корень public/
+  const named = [...all, ...loadImages(PUBLIC_DIR, "")];
+  const logo = findByName(named, LOGO_NAMES);
+  const hero = findByName(named, HERO_NAMES);
+  const aboutOwn = findByName(named, ABOUT_NAMES);
   const gallery = all.filter((img) => img !== logo && img !== hero && img !== aboutOwn);
   // Если отдельного about.* нет — берём первое фото галереи (оно остаётся и в галерее)
   const about = aboutOwn ?? gallery[0] ?? null;

@@ -10,7 +10,7 @@ import { Container, SectionHeading } from "./ui/Basics";
 import { Spark } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
-const INITIAL = 9;
+const INITIAL = 6;
 
 const altFor = (i: number) => `Фото из жизни детского сада MARY POPPINS — ${i + 1}`;
 
@@ -22,11 +22,14 @@ function tileShape(i: number, img: SiteImage): CSSProperties {
   const portrait = img.height > img.width * 1.05;
   switch (i % 7) {
     case 0:
-      return { borderRadius: portrait ? "999px 999px 24px 24px" : "160px 24px 24px 24px" };
+      // Арка: у вертикальных фото сверху обычно фон, а не лица
+      return { borderRadius: portrait ? "999px 999px 24px 24px" : "120px 20px 20px 20px" };
     case 3:
-      return { clipPath: "url(#mp-pebble)" };
+      // «Галька» срезает все углы — только для вертикальных фото крупным планом
+      return portrait ? { clipPath: "url(#mp-pebble)" } : { borderRadius: 20 };
     case 5:
-      return { borderRadius: "96px 20px 96px 20px" };
+      // «Лист»: крупное скругление только сверху слева, нижние углы почти прямые
+      return { borderRadius: "80px 20px 28px 20px" };
     default:
       return { borderRadius: 20 };
   }
