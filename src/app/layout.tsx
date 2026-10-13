@@ -1,13 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Nunito } from "next/font/google";
+import { Manrope, Nunito_Sans } from "next/font/google";
 import { SITE, SITE_URL } from "@/data/site";
 import { getSiteImages } from "@/lib/images";
 import "./globals.css";
 
-const nunito = Nunito({
+const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "600", "700", "800", "900"],
-  variable: "--font-nunito",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin", "cyrillic"],
+  weight: ["600", "700", "800"],
+  variable: "--font-nunito-sans",
   display: "swap",
 });
 
@@ -56,7 +63,7 @@ export function generateMetadata(): Metadata {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#08AEEA",
+  themeColor: "#FFFCF6",
   width: "device-width",
   initialScale: 1,
 };
@@ -88,7 +95,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={nunito.variable}>
+    <html lang="ru" className={`${manrope.variable} ${nunitoSans.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         {children}

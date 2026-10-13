@@ -1,80 +1,60 @@
 @import "tailwindcss";
 
+/* ────────────────────────────────────────────────────────────
+   Дизайн-система MARY POPPINS
+   Premium Playful Minimalism: кремовая основа, пастельные акценты,
+   глубокий синий для текста и действий.
+   ──────────────────────────────────────────────────────────── */
+
 @theme {
-  --color-sky: #08aeea;
-  --color-sky-soft: #e3f6fd;
-  --color-sky-deep: #0789bb;
-  --color-leaf: #18b52b;
-  --color-leaf-soft: #e5f7e7;
-  --color-sun: #ffd52a;
-  --color-sun-soft: #fff7d6;
-  --color-berry: #f33442;
-  --color-berry-soft: #fee8ea;
-  --color-peach: #ff9238;
-  --color-peach-soft: #fff0e3;
-  --color-rose: #ea3b94;
-  --color-rose-soft: #fde8f3;
-  --color-ink: #1f2a44;
-  --color-ink-soft: #5b6680;
-  --color-cream: #f7fbfe;
+  /* Основная палитра */
+  --color-cream: #fffcf6;
+  --color-cream-deep: #f8f2e7;
+  --color-sky: #d8f0f8;
+  --color-deep: #275b78;
+  --color-deep-dark: #1b4660;
+  --color-green: #d9ebcf;
+  --color-yellow: #f7e5a6;
+  --color-coral: #f3b7a7;
+  --color-pink: #f4d8e5;
 
-  --font-sans: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+  /* Насыщенные варианты пастели — для иконок и мелких акцентов (контраст ≥ 4.5:1 на креме) */
+  --color-sky-ink: #2a6a88;
+  --color-green-ink: #4a7337;
+  --color-yellow-ink: #866812;
+  --color-coral-ink: #a8503b;
+  --color-pink-ink: #9b4672;
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-float-slow: float 9s ease-in-out infinite;
-  --animate-drift: drift 40s linear infinite;
-  --animate-sway: sway 5s ease-in-out infinite;
-  --animate-twinkle: twinkle 3s ease-in-out infinite;
-  --animate-fade-in: fade-in 0.25s ease-out;
-  --animate-morph: morph 14s ease-in-out infinite;
+  /* Текст и линии */
+  --color-ink: #1d3340;
+  --color-ink-soft: #55666f;
+  --color-line: #e9e1d2;
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
+  /* Цвета оригинального логотипа — только для фирменного знака */
+  --color-brand-blue: #08aeea;
+  --color-brand-green: #18b52b;
+  --color-brand-yellow: #ffd52a;
+  --color-brand-orange: #ff9238;
+  --color-brand-red: #f33442;
+  --color-brand-pink: #ea3b94;
+
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-display: var(--font-nunito-sans), var(--font-manrope), system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-drift: drift 14s ease-in-out infinite;
+  --animate-drift-slow: drift 20s ease-in-out infinite reverse;
+  --animate-spin-slow: spin 60s linear infinite;
+  --animate-fade-in: fade-in 0.3s ease-out;
+
   @keyframes drift {
-    from {
-      transform: translateX(-12vw);
-    }
-    to {
-      transform: translateX(112vw);
-    }
-  }
-  @keyframes sway {
     0%,
     100% {
-      transform: rotate(-4deg);
+      transform: translate3d(0, 0, 0) rotate(0deg);
     }
     50% {
-      transform: rotate(4deg);
-    }
-  }
-  @keyframes twinkle {
-    0%,
-    100% {
-      opacity: 0.35;
-      transform: scale(0.85);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  @keyframes morph {
-    0%,
-    100% {
-      border-radius: 58% 42% 46% 54% / 46% 52% 48% 54%;
-    }
-    33% {
-      border-radius: 46% 54% 58% 42% / 54% 44% 56% 46%;
-    }
-    66% {
-      border-radius: 52% 48% 40% 60% / 42% 58% 44% 56%;
+      transform: translate3d(0, -8px, 0) rotate(2deg);
     }
   }
   @keyframes fade-in {
@@ -87,44 +67,171 @@
   }
 }
 
+:root {
+  /* Радиусы: у разных типов элементов — разные */
+  --radius-soft: 20px;
+  --radius-card: 28px;
+  --radius-large: 40px;
+  --radius-leaf: 120px 28px 120px 28px;
+  --radius-arch: 999px 999px 28px 28px;
+
+  --shadow-soft: 0 1px 2px rgb(29 51 64 / 0.04), 0 18px 40px -24px rgb(29 51 64 / 0.22);
+  --shadow-lift: 0 2px 4px rgb(29 51 64 / 0.05), 0 28px 56px -28px rgb(29 51 64 / 0.32);
+}
+
 @layer base {
   html {
+    overflow-x: clip;
     scroll-behavior: smooth;
-    scroll-padding-top: 4.5rem;
+    scroll-padding-top: 5rem;
     -webkit-tap-highlight-color: transparent;
   }
   body {
-    @apply bg-white font-sans text-ink antialiased;
+    @apply bg-cream font-sans text-ink antialiased;
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
   ::selection {
-    @apply bg-sky/20;
+    @apply bg-yellow text-ink;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-deep);
+    outline-offset: 3px;
   }
 }
 
-/* Появление первого экрана — на чистом CSS, не ждёт загрузки JS */
+/* Тонкая «бумажная» фактура для крупных цветных плоскостей */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  border-radius: inherit;
+}
+
+/* ── Появление первого экрана: чистый CSS, не ждёт загрузки JS ── */
 .rise {
-  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 1s var(--ease-soft) both;
   animation-delay: var(--d, 0ms);
 }
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(18px);
+  }
+}
+.rise-photo {
+  animation: rise-photo 1.4s var(--ease-soft) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes rise-photo {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
   }
 }
 
-/* Появление при прокрутке */
+/* ── Появление при прокрутке ── */
 .reveal {
-  opacity: 0;
-  transform: translateY(18px);
   transition:
-    opacity 0.7s ease-out,
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease-soft),
+    clip-path 1.2s var(--ease-soft);
   transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-up {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal-fade {
+  opacity: 0;
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.97);
+}
+/* «Шторка» для фотографий: изображение раскрывается из центра */
+.reveal-mask {
+  clip-path: inset(10% 10% 10% 10% round 40px);
+  opacity: 0.4;
 }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+  clip-path: inset(0 0 0 0 round 0);
+}
+
+/* ── Рисующиеся линии (pathLength="1") ── */
+.draw path,
+.draw circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2.2s var(--ease-soft);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 200ms);
+}
+.is-visible .draw path,
+.is-visible .draw circle,
+.draw.is-visible path {
+  stroke-dashoffset: 0;
+}
+.draw-now path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 2.4s var(--ease-soft) forwards;
+  animation-delay: var(--d, 400ms);
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── Лёгкий параллакс, привязанный к прокрутке (где поддерживается) ── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax {
+      animation: parallax linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    @keyframes parallax {
+      from {
+        translate: 0 var(--parallax, 24px);
+      }
+      to {
+        translate: 0 calc(var(--parallax, 24px) * -1);
+      }
+    }
+  }
+}
+
+/* Подчёркивание ссылок, которое «прорисовывается» при наведении */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s var(--ease-soft);
+}
+.link-underline:hover {
+  background-size: 100% 1px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -137,10 +244,18 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
   .reveal,
-  .rise {
-    opacity: 1;
-    transform: none;
+  .rise,
+  .rise-photo {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .draw path,
+  .draw circle,
+  .draw-now path {
+    stroke-dashoffset: 0 !important;
   }
 }

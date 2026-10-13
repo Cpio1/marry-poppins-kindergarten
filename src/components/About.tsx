@@ -1,85 +1,102 @@
-import { Building2, Heart, Lightbulb, Sparkles } from "lucide-react";
+import { Heart, Lightbulb, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { SITE } from "@/data/site";
 import type { SiteImage } from "@/lib/images";
 import { Container, SectionHeading } from "./ui/Basics";
-import { Cloud, Rainbow, Sparkle, Star, UmbrellaDecor } from "./ui/Decor";
+import { BrandMark, Scene, Shape, Spark, WindLine } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
 const VALUES = [
-  { icon: Lightbulb, label: "Самостоятельность", color: "bg-sun-soft text-[#c79800]" },
-  { icon: Sparkles, label: "Творческое мышление", color: "bg-rose-soft text-rose" },
-  { icon: Heart, label: "Уверенность в себе", color: "bg-leaf-soft text-leaf" },
+  { icon: Lightbulb, label: "Самостоятельность", tone: "bg-yellow text-yellow-ink" },
+  { icon: Sparkles, label: "Творческое мышление", tone: "bg-pink text-pink-ink" },
+  { icon: Heart, label: "Уверенность в себе", tone: "bg-green text-green-ink" },
 ];
+
+/** Круглая «печать» с текстом по окружности */
+function Stamp({ className = "" }: { className?: string }) {
+  return (
+    <div aria-hidden className={`flex items-center justify-center rounded-full bg-cream shadow-[var(--shadow-soft)] ${className}`}>
+      <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full animate-spin-slow">
+        <defs>
+          <path id="stamp-circle" d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0" />
+        </defs>
+        <text className="fill-deep font-display text-[10px] font-bold uppercase" letterSpacing="2.6">
+          <textPath href="#stamp-circle">MARY POPPINS · детский сад ·</textPath>
+        </text>
+      </svg>
+      <BrandMark className="relative h-10 w-10" />
+    </div>
+  );
+}
 
 export function About({ photo }: { photo: SiteImage | null }) {
   return (
-    <section id="about" className="relative overflow-hidden py-16 sm:py-20">
-      <Star className="right-[6%] top-16 h-4 w-4 animate-twinkle" color="#08AEEA" />
-      <Sparkle className="left-[4%] bottom-16 h-4 w-4 animate-twinkle [animation-delay:1s]" color="#FF9238" />
+    <section id="about" className="relative overflow-x-clip py-20 sm:py-28 lg:py-32">
+      <Container className="grid items-center gap-16 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
+        {/* Фото-арка */}
+        <div className="relative mx-auto w-full max-w-[420px] lg:mx-0">
+          <Shape variant="leaf" className="absolute -bottom-8 -right-10 h-48 w-48 text-green sm:h-60 sm:w-60" />
+          <Reveal variant="mask" className="relative">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-arch)] bg-cream-deep">
+              {photo ? (
+                <Image
+                  src={photo.src}
+                  alt="Дети в детском саду MARY POPPINS"
+                  fill
+                  sizes="(min-width: 1024px) 420px, 90vw"
+                  className="object-cover transition-transform duration-[1.6s] ease-soft hover:scale-[1.03]"
+                />
+              ) : (
+                <Scene variant="about" className="absolute inset-0 h-full w-full" />
+              )}
+            </div>
+          </Reveal>
+          <Stamp className="absolute -left-4 bottom-10 h-28 w-28 sm:-left-12 sm:h-32 sm:w-32" />
+          <Spark className="absolute -top-3 right-6 h-5 w-5 text-coral-ink/60" />
+        </div>
 
-      <Container className="grid items-center gap-12 lg:grid-cols-2">
-        <Reveal className="relative mx-auto w-full max-w-md lg:order-2">
-          <div aria-hidden className="absolute -right-4 -top-4 h-full w-full rotate-3 bg-sun/40 [border-radius:42%_58%_50%_50%/50%_42%_58%_50%]" />
-          <div aria-hidden className="absolute -bottom-4 -left-4 h-2/3 w-2/3 bg-rose/15 [border-radius:58%_42%_46%_54%/46%_58%_42%_54%]" />
-          <div className="relative aspect-[4/3] overflow-hidden border-[5px] border-white bg-sky-soft [border-radius:46%_54%_42%_58%/52%_44%_56%_48%] shadow-[0_20px_40px_-22px_rgba(8,120,170,0.5)]">
-            {photo ? (
-              <Image
-                src={photo.src}
-                alt="Дети в детском саду MARY POPPINS"
-                fill
-                sizes="(min-width: 1024px) 448px, 90vw"
-                className="object-cover transition-transform duration-700 hover:scale-105"
-              />
-            ) : (
-              <div aria-hidden className="absolute inset-0 bg-[linear-gradient(160deg,#e3f6fd,#fde8f3)]">
-                <Rainbow className="left-1/2 top-1/2 h-24 w-44 -translate-x-1/2 -translate-y-1/2" />
-                <Cloud className="left-[10%] top-[14%] h-10 w-20 animate-float-slow" />
-                <Cloud className="bottom-[12%] right-[10%] h-12 w-24 animate-float" />
-              </div>
-            )}
-          </div>
-          <UmbrellaDecor className="-bottom-6 -left-4 h-16 w-14 animate-sway" color="#08AEEA" />
-        </Reveal>
-
-        <div>
+        {/* Текст */}
+        <div className="relative">
           <SectionHeading
-            align="left"
-            tone="leaf"
+            index="01"
+            tone="green"
             eyebrow="О садике"
             title={
               <>
-                Место, где каждый день — <span className="text-sky">маленькое открытие</span>
+                Место, где каждый день — <span className="text-deep">маленькое открытие</span>
               </>
             }
           />
-          <Reveal delay={100}>
-            <p className="mt-4 text-[15px] leading-relaxed text-ink-soft sm:text-base">
+          <Reveal variant="fade" delay={150}>
+            <WindLine className="mt-2 w-48 text-coral" />
+          </Reveal>
+
+          <Reveal delay={100} className="mt-4 max-w-xl space-y-4 text-base leading-relaxed text-ink-soft sm:text-[17px]">
+            <p>
               MARY POPPINS — детский сад в Алматы, где каждый день наполнен интересными открытиями, развивающими
               занятиями и радостными моментами.
             </p>
-            <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">
+            <p>
               Мы создаём уютную и доброжелательную атмосферу, в которой дети развивают самостоятельность, творческое
               мышление и уверенность в себе.
             </p>
           </Reveal>
 
-          <Reveal delay={180} as="ul" className="mt-6 flex flex-wrap gap-2">
-            {VALUES.map(({ icon: Icon, label, color }) => (
-              <li key={label} className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-bold ${color}`}>
-                <Icon className="h-4 w-4" aria-hidden />
-                {label}
+          <Reveal as="ul" delay={180} className="mt-10 grid gap-px overflow-hidden rounded-[var(--radius-soft)] border border-line bg-line sm:grid-cols-3">
+            {VALUES.map(({ icon: Icon, label, tone }) => (
+              <li key={label} className="flex items-center gap-3 bg-cream px-4 py-4 sm:flex-col sm:items-start sm:gap-4 sm:px-5 sm:py-5">
+                <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${tone}`}>
+                  <Icon className="h-[18px] w-[18px]" aria-hidden />
+                </span>
+                <span className="font-display text-[15px] font-bold leading-snug text-ink">{label}</span>
               </li>
             ))}
           </Reveal>
 
-          <Reveal delay={240} className="mt-6 inline-flex items-center gap-3 rounded-[40px_56px_44px_60px/30px_36px_30px_36px] border border-sky/20 bg-cream px-5 py-3">
-            <span className="flex h-9 w-9 items-center justify-center bg-sky text-white [border-radius:58%_42%_52%_48%/46%_56%_44%_54%]">
-              <Building2 className="h-4.5 w-4.5" aria-hidden />
-            </span>
+          <Reveal delay={240} className="mt-8 flex items-center gap-4 text-sm text-ink-soft">
+            <span aria-hidden className="h-px w-10 bg-ink/25" />
             <span>
-              <span className="block text-xs font-semibold text-ink-soft">Официальное название</span>
-              <span className="font-extrabold text-ink">{SITE.legalName}</span>
+              Официальное название — <span className="font-semibold text-ink">{SITE.legalName}</span>
             </span>
           </Reveal>
         </div>

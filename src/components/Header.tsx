@@ -1,12 +1,12 @@
 "use client";
 
-import { Menu, Phone, X } from "lucide-react";
+import { Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NAV, SITE } from "@/data/site";
 import type { SiteImage } from "@/lib/images";
+import { InstagramIcon, WhatsAppIcon } from "./ui/BrandIcons";
+import { BrandDots } from "./ui/Decor";
 import { Logo } from "./ui/Logo";
-
-const DOT_COLORS = ["bg-sky", "bg-leaf", "bg-sun", "bg-berry", "bg-peach", "bg-rose", "bg-sky", "bg-leaf", "bg-peach"];
 
 export function Header({ logo }: { logo: SiteImage | null }) {
   const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ export function Header({ logo }: { logo: SiteImage | null }) {
   const [active, setActive] = useState<string>("home");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -40,96 +40,157 @@ export function Header({ logo }: { logo: SiteImage | null }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  const solid = scrolled || open;
+
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled || open ? "bg-white/90 shadow-[0_6px_24px_-12px_rgba(8,174,234,0.35)] backdrop-blur-md" : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <a href="#home" aria-label="MARY POPPINS — на главную" className="shrink-0 transition-transform hover:scale-[1.03]" onClick={() => setOpen(false)}>
-          <Logo logo={logo} />
-        </a>
-
-        <nav aria-label="Основное меню" className="hidden xl:block">
-          <ul className="flex items-center gap-0.5">
-            {NAV.map((item, i) => {
-              const isActive = active === item.id;
-              return (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    aria-current={isActive ? "true" : undefined}
-                    className={`group relative block rounded-full px-2.5 py-1.5 text-[13.5px] font-bold transition-colors ${
-                      isActive ? "text-sky-deep" : "text-ink-soft hover:text-ink"
-                    }`}
-                  >
-                    {item.label}
-                    <span
-                      className={`absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full transition-all duration-300 ${DOT_COLORS[i]} ${
-                        isActive ? "scale-100 opacity-100" : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
-                      }`}
-                    />
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        <div className="flex items-center gap-2">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div
+        className={`transition-[background-color,box-shadow,backdrop-filter] duration-500 ${
+          solid ? "bg-cream/85 shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : "bg-transparent"
+        }`}
+      >
+        <div
+          className={`mx-auto flex max-w-[1200px] items-center justify-between gap-6 px-5 transition-[height] duration-500 sm:px-8 ${
+            solid ? "h-16" : "h-[4.5rem] lg:h-20"
+          }`}
+        >
           <a
-            href={SITE.phoneHref}
-            className="hidden items-center gap-1.5 rounded-full bg-sky px-4 py-2 text-sm font-bold text-white shadow-[0_6px_16px_-6px_rgba(8,174,234,0.7)] transition-all hover:-translate-y-0.5 hover:bg-sky-deep sm:inline-flex"
+            href="#home"
+            aria-label="MARY POPPINS — на главную"
+            className="shrink-0 transition-opacity hover:opacity-80"
+            onClick={() => setOpen(false)}
           >
-            <Phone className="h-4 w-4" aria-hidden />
-            {SITE.phone}
+            <Logo logo={logo} />
           </a>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? "Закрыть меню" : "Открыть меню"}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-soft text-sky-deep transition-colors hover:bg-sky hover:text-white xl:hidden"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+
+          <nav aria-label="Основное меню" className="hidden xl:block">
+            <ul className="flex items-center">
+              {NAV.map((item) => {
+                const isActive = active === item.id;
+                return (
+                  <li key={item.id}>
+                    <a
+                      href={`#${item.id}`}
+                      aria-current={isActive ? "true" : undefined}
+                      className={`relative block whitespace-nowrap px-2.5 py-2 text-[14px] font-medium transition-colors duration-300 ${
+                        isActive ? "text-deep" : "text-ink-soft hover:text-ink"
+                      }`}
+                    >
+                      {item.label}
+                      <span
+                        aria-hidden
+                        className={`absolute inset-x-2.5 bottom-0.5 h-[1.5px] origin-left rounded-full bg-deep transition-transform duration-500 ease-soft ${
+                          isActive ? "scale-x-100" : "scale-x-0"
+                        }`}
+                      />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <a
+              href={SITE.phoneHref}
+              className="hidden h-10 items-center gap-2 rounded-full bg-deep pl-1.5 pr-4 text-[14px] font-semibold text-cream transition-colors duration-300 hover:bg-deep-dark sm:inline-flex"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-cream/15">
+                <Phone className="h-3.5 w-3.5" aria-hidden />
+              </span>
+              <span className="whitespace-nowrap xl:hidden 2xl:inline">{SITE.phone}</span>
+              <span className="hidden whitespace-nowrap xl:inline 2xl:hidden">Позвонить</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? "Закрыть меню" : "Открыть меню"}
+              className="relative flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 bg-white/70 transition-colors hover:bg-white xl:hidden"
+            >
+              <span aria-hidden className="relative block h-3 w-4">
+                <span
+                  className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-ink transition-all duration-300 ${open ? "top-1.5 rotate-45" : "top-0"}`}
+                />
+                <span
+                  className={`absolute left-0 top-1.5 h-[1.5px] rounded-full bg-ink transition-all duration-300 ${open ? "w-0 opacity-0" : "w-2.5"}`}
+                />
+                <span
+                  className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-ink transition-all duration-300 ${open ? "top-1.5 -rotate-45" : "top-3"}`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Мобильное меню */}
+      {/* Мобильное меню: полноэкранная панель с нумерованным списком */}
       <div
         id="mobile-menu"
-        className={`overflow-hidden transition-[max-height,opacity] duration-400 ease-out xl:hidden ${
-          open ? "max-h-[calc(100dvh-4rem)] opacity-100" : "pointer-events-none max-h-0 opacity-0"
+        className={`fixed inset-x-0 bottom-0 top-16 bg-cream transition-[opacity,visibility] duration-500 xl:hidden ${
+          open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <nav aria-label="Мобильное меню" className="max-h-[calc(100dvh-4rem)] overflow-y-auto px-4 pb-5 sm:px-6">
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <nav aria-label="Мобильное меню" className="flex h-full flex-col overflow-y-auto px-5 pb-8 pt-4 sm:px-8">
+          <ul className="border-t border-line">
             {NAV.map((item, i) => (
-              <li key={item.id}>
+              <li
+                key={item.id}
+                className={`border-b border-line transition-[opacity,transform] duration-500 ease-soft ${
+                  open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+                }`}
+                style={{ transitionDelay: open ? `${60 + i * 35}ms` : "0ms" }}
+              >
                 <a
                   href={`#${item.id}`}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-[15px] font-bold transition-colors ${
-                    active === item.id ? "bg-sky-soft text-sky-deep" : "bg-cream text-ink hover:bg-sky-soft"
-                  }`}
+                  className="flex items-baseline gap-4 py-3.5"
                 >
-                  <span className={`h-2 w-2 shrink-0 rounded-full ${DOT_COLORS[i]}`} aria-hidden />
-                  {item.label}
+                  <span className="w-6 font-display text-xs font-bold text-ink-soft">{String(i + 1).padStart(2, "0")}</span>
+                  <span
+                    className={`font-display text-[1.35rem] font-bold tracking-[-0.01em] ${
+                      active === item.id ? "text-deep" : "text-ink"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                 </a>
               </li>
             ))}
           </ul>
-          <a
-            href={SITE.phoneHref}
-            onClick={() => setOpen(false)}
-            className="mt-3 flex items-center justify-center gap-2 rounded-full bg-sky px-4 py-3 font-bold text-white sm:hidden"
-          >
-            <Phone className="h-4 w-4" aria-hidden />
-            Позвонить: {SITE.phone}
-          </a>
+
+          <div className="mt-auto pt-8">
+            <a
+              href={SITE.phoneHref}
+              onClick={() => setOpen(false)}
+              className="flex h-13 items-center justify-center gap-2 rounded-full bg-deep px-5 py-3.5 font-semibold text-cream"
+            >
+              <Phone className="h-4 w-4" aria-hidden />
+              {SITE.phone}
+            </a>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <a
+                href={SITE.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-full border border-ink/15 py-3 text-[15px] font-semibold"
+              >
+                <WhatsAppIcon className="h-4.5 w-4.5 text-[#1f9e55]" />
+                WhatsApp
+              </a>
+              <a
+                href={SITE.instagramHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-full border border-ink/15 py-3 text-[15px] font-semibold"
+              >
+                <InstagramIcon className="h-4.5 w-4.5 text-pink-ink" />
+                Instagram
+              </a>
+            </div>
+            <BrandDots className="mx-auto mt-6 flex w-max" />
+          </div>
         </nav>
       </div>
     </header>

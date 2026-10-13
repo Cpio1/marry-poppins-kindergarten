@@ -1,66 +1,109 @@
 import { Apple, Cookie, EggFried, Salad, Soup } from "lucide-react";
 import { Container, SectionHeading } from "./ui/Basics";
-import { Cloud, Sparkle, Star, Wave } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
 const MEALS = [
-  { name: "Завтрак", icon: EggFried, color: "#FFD52A", ring: "#f5c400" },
-  { name: "Второй завтрак", note: "витаминный", icon: Apple, color: "#F33442", ring: "#F33442" },
-  { name: "Обед", icon: Soup, color: "#FF9238", ring: "#FF9238" },
-  { name: "Полдник", icon: Cookie, color: "#EA3B94", ring: "#EA3B94" },
-  { name: "Ужин", icon: Salad, color: "#18B52B", ring: "#18B52B" },
+  { name: "Завтрак", icon: EggFried, tone: "bg-yellow" },
+  { name: "Второй завтрак", note: "витаминный", icon: Apple, tone: "bg-coral/70" },
+  { name: "Обед", icon: Soup, tone: "bg-green" },
+  { name: "Полдник", icon: Cookie, tone: "bg-pink" },
+  { name: "Ужин", icon: Salad, tone: "bg-sky" },
 ];
+
+/* Точки на дуге «путь солнца» (viewBox 220×100, центр 110;95, радиус 88) */
+const ARC_POINTS = [162, 126, 90, 54, 18].map((deg) => {
+  const a = (deg * Math.PI) / 180;
+  return { left: `${((110 + 88 * Math.cos(a)) / 220) * 100}%`, top: `${95 - 88 * Math.sin(a)}%` };
+});
+
+function MealIcon({ icon: Icon, tone, index }: { icon: (typeof MEALS)[number]["icon"]; tone: string; index: number }) {
+  return (
+    <span
+      className={`relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full ${tone} text-deep ring-[6px] ring-cream transition-transform duration-700 ease-soft group-hover:-translate-y-1 group-hover:rotate-[-8deg] lg:h-20 lg:w-20`}
+    >
+      <Icon className="h-6 w-6 lg:h-7 lg:w-7" strokeWidth={1.6} aria-hidden />
+      <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-deep font-display text-[11px] font-extrabold text-cream">
+        {index + 1}
+      </span>
+    </span>
+  );
+}
+
+function MealLabel({ name, note }: { name: string; note?: string }) {
+  return (
+    <span className="block">
+      <span className="block font-display text-[1.1rem] font-bold tracking-[-0.01em] text-ink lg:text-[1.15rem]">{name}</span>
+      {note && <span className="mt-0.5 block text-[13px] font-medium text-coral-ink">{note}</span>}
+    </span>
+  );
+}
 
 export function Nutrition() {
   return (
-    <section id="food" className="relative bg-leaf-soft/60">
-      <Wave color="#ffffff" flip />
-      <Cloud className="right-[5%] top-20 h-10 w-20 animate-float-slow" />
-      <Star className="left-[6%] top-28 h-4 w-4 animate-twinkle" color="#FF9238" />
-      <Sparkle className="bottom-20 right-[10%] h-4 w-4 animate-twinkle [animation-delay:1s]" color="#08AEEA" />
-
-      <Container className="relative py-12 sm:py-16">
+    <section id="food" className="relative overflow-hidden py-20 sm:py-28 lg:py-32">
+      <Container>
         <SectionHeading
-          tone="leaf"
+          index="05"
+          tone="green"
+          align="center"
           eyebrow="Питание"
           title="Вкусно, полезно и с заботой"
           text="В нашем детском саду организовано 5-разовое сбалансированное питание."
         />
 
-        <ol className="relative mt-10 grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
-          {/* Пунктирная «дорожка» между приёмами пищи */}
-          <span aria-hidden className="absolute left-[10%] right-[10%] top-9 hidden border-t-2 border-dashed border-leaf/30 lg:block" />
-          {MEALS.map(({ name, note, icon: Icon, color, ring }, i) => (
-            <Reveal
-              as="li"
-              key={name}
-              delay={i * 80}
-              className={`relative text-center ${i === MEALS.length - 1 ? "col-span-2 sm:col-span-1" : ""}`}
-            >
-              <div className="group mx-auto flex flex-col items-center">
-                <span
-                  className="relative flex h-[72px] w-[72px] items-center justify-center bg-white shadow-[0_12px_24px_-14px_rgba(24,181,43,0.6)] transition-all duration-500 group-hover:-translate-y-1 group-hover:rotate-6"
-                  style={{ borderRadius: "48% 52% 44% 56% / 56% 44% 56% 44%", outline: `3px solid ${ring}33`, outlineOffset: 4 }}
+        {/* Десктоп: приёмы пищи на дуге дня */}
+        <Reveal variant="fade" className="relative mx-auto mt-16 hidden max-w-[980px] pt-6 lg:block">
+          <div className="relative aspect-[220/100]">
+            <svg viewBox="0 0 220 100" fill="none" aria-hidden className="draw absolute inset-0 h-full w-full overflow-visible">
+              <path
+                pathLength={1}
+                d="M22 95A88 88 0 0 1 198 95"
+                stroke="var(--color-deep)"
+                strokeOpacity=".35"
+                strokeWidth="1.4"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+            <span className="absolute bottom-[2%] left-[10%] -translate-x-1/2 text-[12px] font-semibold uppercase tracking-[0.16em] text-ink-soft">
+              утро
+            </span>
+            <span className="absolute bottom-[2%] left-[90%] -translate-x-1/2 text-[12px] font-semibold uppercase tracking-[0.16em] text-ink-soft">
+              вечер
+            </span>
+
+            <ol>
+              {MEALS.map(({ name, note, icon, tone }, i) => (
+                <li
+                  key={name}
+                  className="group absolute flex w-44 -translate-x-1/2 -translate-y-10 flex-col items-center text-center"
+                  style={ARC_POINTS[i]}
                 >
-                  <Icon className="h-8 w-8" style={{ color: color === "#FFD52A" ? "#e0a800" : color }} aria-hidden />
-                  <span
-                    className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white"
-                    style={{ backgroundColor: color === "#FFD52A" ? "#e0a800" : color }}
-                  >
-                    {i + 1}
+                  <MealIcon icon={icon} tone={tone} index={i} />
+                  <span className="mt-2 rounded-full bg-cream px-3 py-1">
+                    <MealLabel name={name} note={note} />
                   </span>
-                </span>
-                <h3 className="mt-4 text-base font-black text-ink">{name}</h3>
-                {note && (
-                  <span className="mt-1 rounded-full bg-white px-2.5 py-0.5 text-xs font-bold text-berry">{note}</span>
-                )}
-              </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="absolute bottom-[4%] left-1/2 -translate-x-1/2 text-center">
+              <p className="font-display text-[6.5rem] font-extrabold leading-[0.85] tracking-[-0.05em] text-deep">5</p>
+              <p className="mt-3 text-[15px] text-ink-soft">приёмов пищи в день</p>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Мобильные и планшеты: вертикальная линия дня */}
+        <ol className="relative mx-auto mt-12 max-w-md lg:hidden">
+          <span aria-hidden className="absolute bottom-8 left-8 top-8 w-px bg-deep/20" />
+          {MEALS.map(({ name, note, icon, tone }, i) => (
+            <Reveal as="li" key={name} delay={i * 70} className="group relative flex items-center gap-5 py-3">
+              <MealIcon icon={icon} tone={tone} index={i} />
+              <MealLabel name={name} note={note} />
             </Reveal>
           ))}
         </ol>
       </Container>
-
-      <Wave color="#ffffff" />
     </section>
   );
 }

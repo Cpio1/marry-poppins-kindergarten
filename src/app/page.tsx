@@ -10,6 +10,7 @@ import { Hero } from "@/components/Hero";
 import { Info } from "@/components/Info";
 import { Nutrition } from "@/components/Nutrition";
 import { WhyUs } from "@/components/WhyUs";
+import { MaskDefs } from "@/components/ui/Decor";
 import { getSiteImages } from "@/lib/images";
 
 export default function Home() {
@@ -17,15 +18,16 @@ export default function Home() {
 
   return (
     <>
+      <MaskDefs />
       <a
         href="#about"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-xl focus:bg-white focus:px-4 focus:py-2 focus:font-bold focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-deep focus:px-5 focus:py-2.5 focus:font-semibold focus:text-cream"
       >
         Перейти к содержанию
       </a>
       <Header logo={logo} />
       <main>
-        <Hero logo={logo} hero={hero} />
+        <Hero hero={hero} />
         <About photo={about} />
         <Info />
         <Groups />

@@ -1,100 +1,116 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Images, Plus, X, ZoomIn } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, X, ZoomIn } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { SITE } from "@/data/site";
 import type { SiteImage } from "@/lib/images";
+import { InstagramIcon } from "./ui/BrandIcons";
 import { Container, SectionHeading } from "./ui/Basics";
-import { Balloon, Blob, Cloud, Star } from "./ui/Decor";
+import { Spark } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
-const INITIAL = 6;
-// Разнообразные мягкие формы: «облачка», арки, «пузырь-реплика», чередуются по кругу
-const SHAPES = [
-  "48px 80px 52px 72px / 56px 48px 70px 60px",
-  "50% 50% 36px 36px / 34% 34% 36px 36px",
-  "80px 44px 72px 56px / 52px 66px 48px 70px",
-  "64px 64px 64px 16px / 56px 56px 56px 16px",
-  "36px 36px 50% 50% / 36px 36px 34% 34%",
-  "72px 52px 80px 48px / 60px 70px 50px 64px",
-];
+const INITIAL = 9;
 
 const altFor = (i: number) => `Фото из жизни детского сада MARY POPPINS — ${i + 1}`;
+
+/**
+ * Форма плитки. Необычные силуэты — выборочно, остальные с мягким скруглением.
+ * Маски срезают только углы, поэтому лица и важные детали в центре кадра сохраняются.
+ */
+function tileShape(i: number, img: SiteImage): CSSProperties {
+  const portrait = img.height > img.width * 1.05;
+  switch (i % 7) {
+    case 0:
+      return { borderRadius: portrait ? "999px 999px 24px 24px" : "160px 24px 24px 24px" };
+    case 3:
+      return { clipPath: "url(#mp-pebble)" };
+    case 5:
+      return { borderRadius: "96px 20px 96px 20px" };
+    default:
+      return { borderRadius: 20 };
+  }
+}
 
 export function Gallery({ images }: { images: SiteImage[] }) {
   const [expanded, setExpanded] = useState(false);
   const [active, setActive] = useState<number | null>(null);
   const shown = useMemo(() => (expanded ? images : images.slice(0, INITIAL)), [images, expanded]);
   const hidden = images.length - shown.length;
-  const [gridRef, width] = useWidth(1024);
-  const layout = useMemo(() => justify(shown, width), [shown, width]);
+  const [gridRef, width] = useWidth(1136);
+  const columns = useMemo(() => distribute(shown, width < 640 ? 2 : 3), [shown, width]);
 
   return (
-    <section id="gallery" className="relative overflow-hidden py-16 sm:py-20">
-      <Cloud className="-left-4 top-24 h-12 w-24 animate-float-slow" color="#e3f6fd" />
-      <Star className="right-[6%] top-16 h-4 w-4 animate-twinkle" color="#F33442" />
-      <Blob className="-right-14 bottom-20 h-40 w-40 opacity-[0.08]" color="#18B52B" variant={1} />
-      <Balloon className="left-[3%] bottom-24 hidden h-14 w-6 animate-float lg:block" color="#08AEEA" />
-
+    <section id="gallery" className="relative overflow-hidden bg-cream-deep py-20 sm:py-28 lg:py-32">
       <Container>
-        <SectionHeading tone="rose" eyebrow="Галерея" title="Моменты из жизни садика" />
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <SectionHeading index="06" tone="pink" eyebrow="Галерея" title="Моменты из жизни садика" />
+          <Reveal delay={120} className="md:pb-2">
+            <a
+              href={SITE.instagramHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-3 text-[15px] font-semibold text-ink"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-pink text-pink-ink transition-transform duration-500 group-hover:rotate-[-8deg]">
+                <InstagramIcon className="h-[18px] w-[18px]" />
+              </span>
+              <span className="link-underline">{SITE.instagramHandle}</span>
+            </a>
+          </Reveal>
+        </div>
 
         {images.length === 0 ? (
-          <Reveal className="mx-auto mt-10 flex max-w-md flex-col items-center gap-3 bg-rose-soft px-8 py-12 [border-radius:60px_90px_70px_100px/70px_60px_90px_60px] text-center">
-            <Images className="h-10 w-10 text-rose" aria-hidden />
-            <p className="font-semibold text-ink-soft">Фотографии скоро появятся</p>
-          </Reveal>
+          <EmptyGallery />
         ) : (
           <>
-            {/* Ряды «по ширине»: каждое фото в своих настоящих пропорциях — без растягивания и обрезки */}
-            <div ref={gridRef} className="mx-auto mt-10 flex max-w-5xl flex-col" style={{ gap: layout.gap }}>
-              {layout.rows.map((row) => (
-                <ul key={row.start} className="flex justify-center" style={{ gap: layout.gap }}>
-                  {row.items.map((img, k) => {
-                    const i = row.start + k;
-                    return (
-                      <li key={img.src} className="shrink-0" style={{ width: (img.width / img.height) * row.height, height: row.height }}>
-                        <Reveal delay={(i % INITIAL) * 60} className="h-full">
-                          <button
-                            type="button"
-                            onClick={() => setActive(i)}
-                            aria-label={`Открыть фото ${i + 1} в увеличенном размере`}
-                            className={`group relative block h-full w-full overflow-hidden bg-sky-soft shadow-[0_14px_28px_-20px_rgba(31,42,68,0.55)] transition-all duration-500 hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky/40 ${
-                              i % 2 ? "hover:-rotate-1" : "hover:rotate-1"
-                            }`}
-                            style={{ borderRadius: SHAPES[i % SHAPES.length] }}
-                          >
-                            <Image
-                              src={img.src}
-                              alt={altFor(i)}
-                              fill
-                              sizes="(min-width: 1024px) 420px, (min-width: 640px) 40vw, 60vw"
-                              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                            />
-                            <span className="absolute inset-0 flex items-center justify-center bg-sky-deep/25 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-sky-deep">
-                                <ZoomIn className="h-5 w-5" aria-hidden />
-                              </span>
+            <div ref={gridRef} className="mt-14 flex items-start gap-3 sm:gap-5">
+              {columns.map((col, c) => (
+                <ul
+                  key={c}
+                  className={`flex min-w-0 flex-1 flex-col gap-3 sm:gap-5 ${columns.length === 3 && c === 1 ? "pt-16 lg:pt-24" : ""}`}
+                >
+                  {col.map(({ img, index: i }) => (
+                    <li key={img.src}>
+                      <Reveal variant="mask" delay={(i % INITIAL) * 70}>
+                        <button
+                          type="button"
+                          onClick={() => setActive(i)}
+                          aria-label={`Открыть фото ${i + 1} в увеличенном размере`}
+                          className="group relative block w-full overflow-hidden bg-cream focus:outline-none focus-visible:ring-4 focus-visible:ring-deep/40"
+                          style={{ aspectRatio: `${img.width} / ${img.height}`, ...tileShape(i, img) }}
+                        >
+                          <Image
+                            src={img.src}
+                            alt={altFor(i)}
+                            fill
+                            sizes="(min-width: 1200px) 380px, (min-width: 640px) 31vw, 46vw"
+                            className="object-cover transition-transform duration-[1.2s] ease-soft group-hover:scale-[1.04]"
+                          />
+                          <span className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-deep/45 via-transparent to-transparent pb-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100">
+                            <span className="flex translate-y-2 items-center gap-2 rounded-full bg-cream/95 px-4 py-2 text-[13px] font-semibold text-deep transition-transform duration-500 ease-soft group-hover:translate-y-0">
+                              <ZoomIn className="h-4 w-4" aria-hidden />
+                              Открыть
                             </span>
-                          </button>
-                        </Reveal>
-                      </li>
-                    );
-                  })}
+                          </span>
+                        </button>
+                      </Reveal>
+                    </li>
+                  ))}
                 </ul>
               ))}
             </div>
 
             {hidden > 0 && (
-              <div className="mt-6 flex justify-center">
+              <div className="mt-12 flex justify-center">
                 <button
                   type="button"
                   onClick={() => setExpanded(true)}
-                  className="group inline-flex items-center gap-2 rounded-full border-2 border-rose/30 bg-white px-6 py-2.5 font-bold text-rose transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose-soft"
+                  className="group inline-flex min-h-12 items-center gap-3 rounded-full border border-ink/15 bg-cream px-6 text-[15px] font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-ink/30 hover:bg-white"
                 >
-                  <Plus className="h-4 w-4 transition-transform duration-300 group-hover:rotate-90" aria-hidden />
+                  <Plus className="h-4 w-4 transition-transform duration-500 group-hover:rotate-90" aria-hidden />
                   Показать ещё
-                  <span className="text-sm font-semibold text-ink-soft">({hidden})</span>
+                  <span className="rounded-full bg-pink px-2 py-0.5 text-[12px] font-bold text-pink-ink">{hidden}</span>
                 </button>
               </div>
             )}
@@ -109,36 +125,46 @@ export function Gallery({ images }: { images: SiteImage[] }) {
   );
 }
 
-type Row = { start: number; items: SiteImage[]; height: number };
+/** Пустое состояние: композиция из фирменных форм */
+function EmptyGallery() {
+  return (
+    <Reveal className="mt-14 grid items-center gap-10 sm:grid-cols-[1.1fr_1fr]">
+      <div aria-hidden className="relative mx-auto grid w-full max-w-md grid-cols-[1.1fr_1fr] gap-4">
+        <div className="grain row-span-2 aspect-[3/4] rounded-[var(--radius-arch)] bg-sky" />
+        <div className="grain aspect-square rounded-full bg-yellow" />
+        <div className="grain aspect-[4/3] rounded-[64px_16px_64px_16px] bg-pink" />
+        <Spark className="absolute -top-3 right-4 h-5 w-5 text-coral-ink/60" />
+      </div>
+      <div className="text-center sm:text-left">
+        <p className="font-display text-[1.5rem] font-extrabold tracking-[-0.015em] text-ink">Фотографии скоро появятся</p>
+        <p className="mt-2 text-ink-soft">
+          А пока заглядывайте в наш Instagram{" "}
+          <a href={SITE.instagramHref} target="_blank" rel="noopener noreferrer" className="font-semibold text-deep underline-offset-4 hover:underline">
+            {SITE.instagramHandle}
+          </a>
+        </p>
+      </div>
+    </Reveal>
+  );
+}
 
-/** Раскладка по рядам: каждый полный ряд точно заполняет ширину контейнера. */
-function justify(images: SiteImage[], width: number) {
-  const target = width < 640 ? 170 : width < 900 ? 230 : 290;
-  const gap = width < 640 ? 10 : 16;
-  const rows: Row[] = [];
-  let start = 0;
-  let items: SiteImage[] = [];
-  let ratioSum = 0;
+type Placed = { img: SiteImage; index: number };
 
-  images.forEach((img, i) => {
-    items.push(img);
-    ratioSum += img.width / img.height;
-    const available = width - gap * (items.length - 1);
-    if (ratioSum * target >= available) {
-      rows.push({ start, items, height: available / ratioSum });
-      start = i + 1;
-      items = [];
-      ratioSum = 0;
-    }
+/**
+ * Раскладка по колонкам: каждое фото — в самую короткую колонку.
+ * Фото сохраняют свои пропорции (без обрезки). Порядок первых плиток
+ * не меняется при «Показать ещё», поэтому сетка не «прыгает».
+ */
+function distribute(images: SiteImage[], count: number) {
+  const cols: Placed[][] = Array.from({ length: count }, () => []);
+  // Средняя колонка начинается ниже — учитываем этот отступ
+  const heights = Array.from({ length: count }, (_, c): number => (count === 3 && c === 1 ? 0.3 : 0));
+  images.forEach((img, index) => {
+    const c = heights.indexOf(Math.min(...heights));
+    cols[c].push({ img, index });
+    heights[c] += img.height / img.width + 0.05;
   });
-
-  if (items.length) {
-    const available = width - gap * (items.length - 1);
-    // Последний ряд: если почти заполнен — растягиваем по ширине, иначе центрируем
-    const fill = ratioSum * target >= available * 0.75;
-    rows.push({ start, items, height: fill ? available / ratioSum : target });
-  }
-  return { rows, gap };
+  return cols;
 }
 
 function useWidth(fallback: number) {
@@ -194,14 +220,14 @@ function Lightbox({
   }, []);
 
   const navBtn =
-    "absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition-colors hover:bg-white/30";
+    "absolute top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-cream/20 bg-cream/10 text-cream backdrop-blur transition-colors hover:bg-cream/25";
 
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-label="Просмотр фотографии"
-      className="fixed inset-0 z-[100] flex animate-fade-in items-center justify-center bg-[#0b2233]/90 p-4 backdrop-blur-sm sm:p-10"
+      className="fixed inset-0 z-[100] flex animate-fade-in items-center justify-center bg-[#10293a]/92 p-4 backdrop-blur-md sm:p-12"
       onClick={onClose}
       onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
@@ -216,17 +242,17 @@ function Lightbox({
         type="button"
         onClick={onClose}
         aria-label="Закрыть"
-        className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/30"
+        className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-cream/20 bg-cream/10 text-cream transition-colors hover:bg-cream/25"
       >
         <X className="h-5 w-5" />
       </button>
 
       {count > 1 && (
         <>
-          <button type="button" aria-label="Предыдущее фото" className={`${navBtn} left-2 sm:left-5`} onClick={(e) => (e.stopPropagation(), prev())}>
+          <button type="button" aria-label="Предыдущее фото" className={`${navBtn} left-2 sm:left-6`} onClick={(e) => (e.stopPropagation(), prev())}>
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <button type="button" aria-label="Следующее фото" className={`${navBtn} right-2 sm:right-5`} onClick={(e) => (e.stopPropagation(), next())}>
+          <button type="button" aria-label="Следующее фото" className={`${navBtn} right-2 sm:right-6`} onClick={(e) => (e.stopPropagation(), next())}>
             <ChevronRight className="h-6 w-6" />
           </button>
         </>
@@ -240,11 +266,11 @@ function Lightbox({
           width={img.width}
           height={img.height}
           sizes="100vw"
-          className="max-h-[80vh] w-auto max-w-[min(92vw,1200px)] animate-fade-in rounded-[32px_48px_36px_52px/40px_34px_46px_38px] object-contain shadow-2xl"
+          className="max-h-[80vh] w-auto max-w-[min(92vw,1200px)] animate-fade-in rounded-[24px] object-contain shadow-2xl"
           style={{ height: "auto" }}
         />
-        <figcaption className="mt-3 text-sm font-semibold text-white/80">
-          {index + 1} / {count}
+        <figcaption className="mt-4 font-display text-sm font-semibold tracking-[0.1em] text-cream/75">
+          {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
         </figcaption>
       </figure>
     </div>

@@ -1,56 +1,64 @@
-import { ExternalLink, FileText } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
 import { DOCUMENTS_URL } from "@/data/site";
-import { Container } from "./ui/Basics";
-import { Cloud, Sparkle, Star } from "./ui/Decor";
+import { BTN_PRIMARY, Container, Eyebrow } from "./ui/Basics";
+import { Scallop } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
 export function Documents() {
   const hasLink = DOCUMENTS_URL.trim().length > 0;
 
   return (
-    <section id="documents" className="relative py-10 sm:py-14">
+    <section id="documents" className="relative py-20 sm:py-24">
       <Container>
-        <Reveal className="relative mx-auto max-w-3xl overflow-hidden bg-sun-soft px-8 py-12 text-center [border-radius:90px_60px_110px_70px/70px_90px_60px_100px] sm:px-14">
-          <Cloud className="-right-4 -top-2 h-14 w-28 opacity-90" />
-          <Cloud className="-bottom-4 -left-6 h-12 w-24 opacity-90" />
-          <Star className="left-[10%] top-8 h-4 w-4 animate-twinkle" color="#FF9238" />
-          <Sparkle className="bottom-8 right-[12%] h-4 w-4 animate-twinkle [animation-delay:.6s]" color="#EA3B94" />
+        <Reveal className="grain relative overflow-hidden rounded-[var(--radius-large)] bg-yellow/70 px-6 py-10 sm:px-12 sm:py-12 lg:px-16">
+          {/* Стопка «листов» — декоративная */}
+          <div aria-hidden className="pointer-events-none absolute -right-6 -top-10 hidden h-56 w-44 rotate-[10deg] rounded-[20px] border border-deep/10 bg-cream/60 lg:block" />
+          <div aria-hidden className="pointer-events-none absolute -right-2 -top-4 hidden h-56 w-44 rotate-[3deg] rounded-[20px] border border-deep/10 bg-cream/80 lg:block">
+            <span className="absolute left-6 right-10 top-10 h-1.5 rounded-full bg-deep/10" />
+            <span className="absolute left-6 right-16 top-[3.25rem] h-1.5 rounded-full bg-deep/10" />
+            <span className="absolute left-6 right-12 top-[4.25rem] h-1.5 rounded-full bg-deep/10" />
+          </div>
 
-          <div className="relative">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center bg-white text-peach [border-radius:58%_42%_52%_48%/46%_56%_44%_54%] shadow-[0_10px_20px_-12px_rgba(255,146,56,0.8)]">
-              <FileText className="h-7 w-7" aria-hidden />
-            </span>
-            <h2 className="mt-4 text-2xl font-black text-ink sm:text-3xl">Документы</h2>
-            <p className="mx-auto mt-2 max-w-md text-[15px] text-ink-soft sm:text-base">
-              Ознакомьтесь с официальными документами нашего детского сада.
-            </p>
-
-            {hasLink ? (
-              <a
-                href={DOCUMENTS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group mt-6 inline-flex items-center gap-2 rounded-full bg-peach px-7 py-3 font-bold text-white shadow-[0_12px_24px_-12px_rgba(255,146,56,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f27d1d]"
-              >
-                Посмотреть документы
-                <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-              </a>
-            ) : (
-              <div className="mt-6 flex flex-col items-center gap-2">
-                <button
-                  type="button"
-                  disabled
-                  aria-describedby="documents-soon"
-                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-peach/60 px-7 py-3 font-bold text-white"
-                >
-                  Посмотреть документы
-                  <ExternalLink className="h-4 w-4" aria-hidden />
-                </button>
-                <span id="documents-soon" className="text-xs font-semibold text-ink-soft">
-                  Ссылка на документы скоро появится
-                </span>
+          <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-start gap-5">
+              <span className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-full bg-cream text-deep sm:flex">
+                <FileText className="h-6 w-6" strokeWidth={1.6} aria-hidden />
+              </span>
+              <div>
+                <Eyebrow index="07" tone="yellow">
+                  Официально
+                </Eyebrow>
+                <h2 className="mt-3 text-[1.85rem] font-extrabold leading-tight tracking-[-0.02em] text-ink sm:text-[2.2rem]">Документы</h2>
+                <p className="mt-2 max-w-md text-base leading-relaxed text-ink-soft">
+                  Ознакомьтесь с официальными документами нашего детского сада.
+                </p>
+                <Scallop count={6} className="mt-4 h-3 w-28 text-deep/40" />
               </div>
-            )}
+            </div>
+
+            <div className="lg:pr-44">
+              {hasLink ? (
+                <a href={DOCUMENTS_URL} target="_blank" rel="noopener noreferrer" className={BTN_PRIMARY}>
+                  Посмотреть документы
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+                </a>
+              ) : (
+                <div className="flex flex-col items-start gap-2">
+                  <button
+                    type="button"
+                    disabled
+                    aria-describedby="documents-soon"
+                    className="inline-flex min-h-12 cursor-not-allowed items-center gap-2.5 rounded-full bg-deep/45 px-6 text-[15px] font-semibold text-cream"
+                  >
+                    Посмотреть документы
+                    <ArrowUpRight className="h-4 w-4" aria-hidden />
+                  </button>
+                  <span id="documents-soon" className="text-[13px] text-ink-soft">
+                    Ссылка на документы скоро появится
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </Reveal>
       </Container>

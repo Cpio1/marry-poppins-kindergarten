@@ -1,52 +1,62 @@
 import { Apple, HeartHandshake, Languages, Puzzle, Smile, Sparkles } from "lucide-react";
-import { Container } from "./ui/Basics";
-import { Balloon, Cloud, Star } from "./ui/Decor";
+import { Container, Eyebrow } from "./ui/Basics";
+import { SoftEdge, Spark, UmbrellaLine, WindLine } from "./ui/Decor";
 import { Reveal } from "./ui/Reveal";
 
 const REASONS = [
-  { label: "Индивидуальный подход", icon: Smile, color: "#08AEEA" },
-  { label: "Развивающие занятия", icon: Sparkles, color: "#FF9238" },
-  { label: "Изучение казахского и английского языков", icon: Languages, color: "#18B52B" },
-  { label: "Методика Монтессори", icon: Puzzle, color: "#EA3B94" },
-  { label: "5-разовое питание", icon: Apple, color: "#F33442" },
-  { label: "Заботливая атмосфера", icon: HeartHandshake, color: "#d9a900" },
+  { label: "Индивидуальный подход", icon: Smile },
+  { label: "Развивающие занятия", icon: Sparkles },
+  { label: "Изучение казахского и английского языков", icon: Languages },
+  { label: "Методика Монтессори", icon: Puzzle },
+  { label: "5-разовое питание", icon: Apple },
+  { label: "Заботливая атмосфера", icon: HeartHandshake },
 ];
 
 export function WhyUs() {
   return (
-    <section aria-labelledby="why-title" className="relative py-6 sm:py-10">
-      <Container>
-        <div className="relative overflow-hidden bg-[linear-gradient(135deg,#08AEEA,#0796cc)] px-6 py-12 text-white [border-radius:72px_120px_80px_110px/60px_80px_70px_90px] sm:px-12 sm:py-14">
-          <Cloud className="-left-4 -top-2 h-14 w-28 opacity-20" />
-          <Cloud className="-bottom-3 right-10 h-16 w-32 opacity-15" />
-          <Star className="right-[6%] top-8 h-5 w-5 animate-twinkle" />
-          <Balloon className="bottom-6 left-[3%] hidden h-16 w-7 animate-float md:block" color="#FFD52A" />
+    <section aria-labelledby="why-title" className="relative">
+      <SoftEdge color="var(--color-deep)" className="-mb-px" />
+      <div className="relative overflow-hidden bg-deep py-20 text-cream sm:py-24 lg:py-28">
+        <Reveal variant="fade" className="absolute -left-10 top-10">
+          <WindLine className="w-[420px] text-cream/20" />
+        </Reveal>
+        <Spark className="absolute right-[6%] top-12 h-5 w-5 animate-drift text-yellow/70" />
 
-          <div className="relative">
-            <Reveal className="text-center">
-              <h2 id="why-title" className="text-2xl font-black sm:text-3xl">
-                Почему выбирают MARY POPPINS?
-              </h2>
-            </Reveal>
+        <Container className="relative grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+          <Reveal className="relative">
+            <Eyebrow tone="yellow" light>
+              Наши преимущества
+            </Eyebrow>
+            <h2
+              id="why-title"
+              className="mt-4 max-w-md text-[1.85rem] font-extrabold leading-[1.12] tracking-[-0.02em] sm:text-[2.35rem] lg:text-[2.6rem]"
+            >
+              Почему выбирают MARY POPPINS?
+            </h2>
+            <UmbrellaLine fill="var(--color-coral)" className="mt-10 hidden h-36 w-32 rotate-[-12deg] text-cream/80 lg:block" />
+          </Reveal>
 
-            <ul className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {REASONS.map(({ label, icon: Icon, color }, i) => (
-                <Reveal as="li" key={label} delay={i * 60}>
-                  <div className="group flex h-full items-center gap-3 rounded-full bg-white/95 py-2.5 pl-2.5 pr-5 text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-white">
-                    <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center [border-radius:58%_42%_52%_48%/46%_56%_44%_54%] transition-transform duration-300 group-hover:scale-110"
-                      style={{ backgroundColor: `${color}1f`, color }}
-                    >
-                      <Icon className="h-4.5 w-4.5" aria-hidden />
-                    </span>
-                    <span className="text-[15px] font-bold leading-snug">{label}</span>
-                  </div>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Container>
+          <ol className="grid sm:grid-cols-2 sm:gap-x-10">
+            {REASONS.map(({ label, icon: Icon }, i) => (
+              <Reveal
+                as="li"
+                key={label}
+                delay={i * 70}
+                className="group flex items-center gap-4 border-t border-cream/15 py-5 sm:py-6"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-cream/25 text-yellow transition-colors duration-500 group-hover:bg-cream group-hover:text-deep">
+                  <Icon className="h-5 w-5" strokeWidth={1.6} aria-hidden />
+                </span>
+                <span className="text-[16px] font-semibold leading-snug sm:text-[17px]">{label}</span>
+                <span aria-hidden className="ml-auto self-start font-display text-xs font-bold text-cream/40">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </Reveal>
+            ))}
+          </ol>
+        </Container>
+      </div>
+      <SoftEdge color="var(--color-deep)" flip className="-mt-px" />
     </section>
   );
 }

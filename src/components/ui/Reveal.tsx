@@ -8,10 +8,12 @@ type Props = {
   delay?: number;
   as?: ElementType;
   style?: CSSProperties;
+  /** up — подъём, fade — растворение, scale — мягкое приближение, mask — «шторка» для фото */
+  variant?: "up" | "fade" | "scale" | "mask";
 };
 
 /** Плавное появление блока, когда он попадает в зону видимости. */
-export function Reveal({ children, className = "", delay = 0, as: Tag = "div", style }: Props) {
+export function Reveal({ children, className = "", delay = 0, as: Tag = "div", style, variant = "up" }: Props) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -31,7 +33,11 @@ export function Reveal({ children, className = "", delay = 0, as: Tag = "div", s
   }, []);
 
   return (
-    <Tag ref={ref} className={`reveal ${className}`} style={{ ...style, "--reveal-delay": `${delay}ms` } as CSSProperties}>
+    <Tag
+      ref={ref}
+      className={`reveal reveal-${variant} ${className}`}
+      style={{ ...style, "--reveal-delay": `${delay}ms` } as CSSProperties}
+    >
       {children}
     </Tag>
   );
